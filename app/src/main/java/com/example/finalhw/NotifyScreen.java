@@ -2,6 +2,9 @@ package com.example.finalhw;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import android.os.Bundle;
@@ -14,7 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class NotifyScreen extends AppCompatActivity {
     private EditText et_title, et_message;
     private Button btn_send;
-
+    String token;
+    DatabaseReference tokenRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +34,7 @@ public class NotifyScreen extends AppCompatActivity {
                         }
 
                         // Get new FCM registration token
-                        String token = task.getResult();
+                        token = task.getResult();
                         System.out.println("Token " + token);
 
                     }
@@ -55,5 +59,14 @@ public class NotifyScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void saveTokenToFB(String token){
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        User u = new User(uid, token);
+
+        tokenRef = FirebaseDatabase.getInstance().getReference("Tokens");
+        tokenRef.child(uid).setValue(u);
     }
 }

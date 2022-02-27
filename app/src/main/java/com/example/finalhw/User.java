@@ -5,9 +5,14 @@ public class User {
     private String name;
     private String email;
     private String password;
-
+    private String token;   //for fcm(firebase cloud message)
     public User() {
         //required for firebase
+    }
+
+    public User(String uid, String token) {
+        this.uid = uid;
+        this.token = token;
     }
 
     public User(String uid, String name, String email, String password) {
@@ -15,6 +20,14 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getUid() {
